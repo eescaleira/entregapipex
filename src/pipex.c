@@ -6,11 +6,24 @@
 /*   By: eescalei <eescalei@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 22:11:31 by eescalei          #+#    #+#             */
-/*   Updated: 2024/02/11 20:17:28 by eescalei         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:53:44 by eescalei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
+
+pid_t fork_creation(int (*fd)[2], t_pipe *pipex)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		free(fd);
+		print_error(pipex);
+	}
+	return (pid);
+}
 
 void	create_descriptors(t_pipe *pipex, char **argv, char **envp, int ac)
 {

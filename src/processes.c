@@ -6,7 +6,7 @@
 /*   By: eescalei <eescalei@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:00:49 by eescalei          #+#    #+#             */
-/*   Updated: 2024/02/11 20:17:31 by eescalei         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:56:57 by eescalei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,35 +60,20 @@ void	processes(t_pipe *pipex, char **argv, char **envp, int cmd_count)
 	pipex->i = 0;
 	fd = (int (*)[2])malloc(sizeof(int [2]) * (cmd_count - 1));
 	create_pipe(pipex, cmd_count - 1, fd);
-	pipex->pid[0] = fork();
-	if (pipex->pid[0] == -1)
-	{
-		free(fd);
-		print_error(pipex);
-	}
+	pipex->pid[0] = fork_creation(fd, pipex);
 	if (pipex->pid[0] == 0)
 		process_1(pipex, argv[2], envp, fd);
 	waitpid(pipex->pid[0], NULL, WNOHANG);
 	pipex->i = 1;
 	while ((cmd_count - 1) > pipex->i)
 	{
-		pipex->pid[pipex->i] = fork();
-		if (pipex->pid[pipex->i] == -1)
-		{
-			free(fd);
-			print_error(pipex);
-		}
+		pipex->pid[pipex->i] = fork_creation(fd, pipex);
 		if (pipex->pid[pipex->i] == 0)
 			process_2(pipex, argv[pipex->i + 2], envp, fd);
 		waitpid(pipex->pid[pipex->i], NULL, WNOHANG);
 		pipex->i++;
 	}
-	pipex->pid[pipex->i] = fork();
-	if (pipex->pid[pipex->i] == -1)
-	{
-		free(fd);
-		print_error(pipex);
-	}	
+	pipex->pid[pipex->i] = fork_creation(fd, pipex);
 	if (pipex->pid[pipex->i] == 0)
 		process_3(pipex, argv[pipex->i + 2], envp, fd);
 	waitpid(-1, NULL, WNOHANG);

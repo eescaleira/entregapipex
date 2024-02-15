@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eescalei <eescalei@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 07:45:18 by eescalei          #+#    #+#             */
-/*   Updated: 2024/02/04 16:36:49 by eescalei         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:54:22 by eescalei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ void	process_2(t_pipe *pipex, char *cmd, char **envp, int (*fd)[2]);
 void	process_3(t_pipe *pipex, char *cmd, char **envp, int (*fd)[2]);
 void	processes(t_pipe *pipex, char **argv, char **envp, int cmd_count);
 
-void	create_descriptors(t_pipe *pipex, char **argv, char **envp, int ac) ;
+void	create_descriptors(t_pipe *pipex, char **argv, char **envp, int ac);
 void	create_pipe(t_pipe *pipex, int cmd_count, int (*fd)[2]);
 void	manage_pipes(int cmd_count, int (*fd)[2], int i);
+pid_t	fork_creation(int (*fd)[2], t_pipe *pipex);
 
 void	get_cmds(t_pipe *pipex);
 void	get_path(t_pipe *pipex, char **envp);
